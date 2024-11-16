@@ -39,7 +39,6 @@ app.set('view engine', 'pug');
 app.set('views', './views/pug');
 
 myDB(async client => {
-  console.log("Connected to database");
   const myDataBase = await client.db('database').collection('users');
 
     app.route('/').get((req, res) => {

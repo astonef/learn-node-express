@@ -57,7 +57,7 @@ myDB(async client => {
   });
 
   app
-  .use((req, res) => {
+  .use((req, res, next) => {
     res.status(404)
     .type('text')
     .send('Not Found');

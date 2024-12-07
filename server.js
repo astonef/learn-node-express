@@ -50,7 +50,7 @@ myDB(async client => {
   });
 
   app
-  .route('logout')
+  .route('/logout')
   .get((req, res) => {
     req.logout();
     req.redirect('/');

@@ -49,18 +49,15 @@ myDB(async client => {
     res.render('profile', { username: req.user.username });
   });
 
-  app
-  .route('/logout')
-  .get((req, res) => {
+  app.route('/logout').get((req, res) => {
     req.logout();
-    req.redirect('/');
+    res.redirect('/');
   });
 
-  app
-  .use((req, res, next) => {
+  app.use((req, res, next) => {
     res.status(404)
-    .type('text')
-    .send('Not Found');
+      .type('text')
+      .send('Not Found');
   });
 
    passport.use(new LocalStrategy((username, password, done) => {

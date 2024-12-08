@@ -60,6 +60,33 @@ myDB(async client => {
       .send('Not Found');
   });
 
+  app.route('/register')
+  .post((req, res, next) => {
+    myDataBase.findOne({ username: req.body.username }, (err, user) => {
+      if (err) {
+        next(err);
+      } else if (user) {
+        res.redirect('/');
+      } else {
+        myDataBase.insertOne({
+          username: req.body.username,
+          password: req.body.password
+        },
+          (err, doc) => {
+            if (err) {
+              res.redirect('/');
+            } else {
+              // The inserted document is held within
+              // the ops property of the doc
+              next(null, doc.ops[0]);
+            }
+          }
+        ); 
+      }
+    });
+  });
+
+
    passport.use(new LocalStrategy((username, password, done) => {
      myDataBase.findOne({ username: username }, (err, user) => {
        console.log(`User ${username} attempted to log in.`);

@@ -1,6 +1,6 @@
 $(document).ready(function () {
   /*global io*/
-  let socket = io();
+  let socket = io('https://learn-node-express-icry.onrender.com');
   
   // Form submittion with new message in field with id 'm'
   $('form').submit(function () {

@@ -7,6 +7,8 @@ const session = require('express-session');
 const passport = require('passport');
 const routes = require('./routes.js');
 const auth = require('./auth.js');
+const hhtp = require('http').createServer(app);
+const io = require('socket.io')(hhtp);
 
 const app = express();
 
@@ -33,6 +35,14 @@ myDB(async client => {
 
   routes(app, myDataBase);
   auth(app, myDataBase);
+  
+  let currentUsers = 0;
+  io.on('connection', (socket) => {
+    ++currentUsers;
+    io.emit('user count', currentUsers);
+    console.log('A user has connected');
+  });
+
 }).catch(e => {
   app.route('/').get((req, res) => {
     res.render('index', { title: e, message: 'Unable to connect to database' });
@@ -40,6 +50,6 @@ myDB(async client => {
 });
   
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+http.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
 });

@@ -15,6 +15,7 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const passportSocketIo = require('passport.socketio');
 const cookieParser = require('cookie-parser');
+const { connected } = require('process');
 const MongoStore = require('connect-mongo')(session);
 const URI = process.env.MONGO_URI;
 const store = new MongoStore({ url: URI});
@@ -57,7 +58,11 @@ myDB(async client => {
   let currentUsers = 0;
   io.on('connection', (socket) => {
     ++currentUsers;
-    io.emit('user count', currentUsers);
+    io.emit('user',{ 
+      username: socket.request.user.username,
+      currentUsers,
+      connected: true
+  });
     console.log('A user has connected');
 
     socket.on('disconnect', () => {
